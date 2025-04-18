@@ -1,0 +1,19 @@
+{
+  "name": "clicksalud",
+  "version": "1.0.0",
+  "description": "Proyecto trabajo fin de grado del ciclo superior DAW",
+  "main": "gulpfile.js",
+  "scripts": {
+    "dev": "gulp"
+  },
+  "author": "Adrián Calvete Corrales",
+  "license": "ISC",
+  "devDependencies": {
+    "cssnano": "^7.0.6",
+    "gulp": "^5.0.0",
+    "gulp-postcss": "^10.0.0",
+    "gulp-sass": "^6.0.1",
+    "gulp-terser": "^2.1.0",
+    "sass": "^1.86.3"
+  }
+}
