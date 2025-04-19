@@ -1,0 +1,64 @@
+/* Conversión del tamaño para que 1rem = 10px */
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+/* Globales para todo lo conenido en el body */
+body {
+    font-family: $fuentePrincipal;
+    font-size: 1.6rem;
+    line-height: 1.8;
+}
+
+/* Globales para los párrafos */
+p {
+    color: $negro;
+    font-size: 2rem;
+}
+
+/* Contenedor de las páginas del proyecto */
+.contenedor {
+    width: 95%;
+    max-width: 120rem; /* -> 1200px */
+    margin: 0 auto;
+}
+
+/* Quitamos la decoración a todos los enlaces */
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+/* Globales para los headers*/
+h1, h2, h3 {
+    font-family: $fuentePrincipal;
+    font-weight: 300;
+    text-align: center;
+}
+
+/* Tamaños de fuente para los headers -> conversión 1rem = 10px */
+h1 {
+    font-size: 3.8rem;
+}
+
+h2 {
+    font-size: 3.4rem;
+}
+
+h3 {
+    font-size: 3rem;
+}
+
+h4 {
+    font-size: 2.6rem;
+}
