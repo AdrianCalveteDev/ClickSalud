@@ -1,0 +1,21 @@
+.header {
+    background-color: $negro;
+    padding: 1rem 0 3rem 0;
+}
+
+.header-logo {
+    width: 28rem;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+    @include tablet {
+        margin: 0;
+    }
+    
+}
+
+.contenedor-header {
+    width: 95%;
+    max-width: 120rem; /* -> 1200px */
+    margin: 0 auto;
+}
+
