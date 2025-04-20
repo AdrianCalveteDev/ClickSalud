@@ -19,7 +19,7 @@
 
     <section class="servicio-login">
         <div class="contenedor-servicio-login">
-            <h2>¿Listo para reservar sus citas?</h2>
+            <h2>¿Listo para reservar tus citas?</h2>
             <p>Empieza a usar nuestra aplicación hoy mismo y gestiona tus citas médicas con comidad.</p>
             <a class="boton-verde" href="#">Iniciar sesión o crear cuenta</a>
         </div>
