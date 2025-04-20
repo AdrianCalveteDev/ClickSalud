@@ -17,6 +17,11 @@ body {
     line-height: 1.8;
 }
 
+/* Global para las secciones*/
+section {
+    margin: 4rem 0; // separación vertical entre secciones
+}
+
 /* Globales para los párrafos */
 p {
     color: $negro;

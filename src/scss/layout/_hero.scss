@@ -1,0 +1,12 @@
+.hero {
+    margin-bottom: 4rem;
+    @include tablet {
+        @include grid (2,1rem);
+
+        .hero-img{
+            width: 20rem;
+            margin: 0 auto;
+        }
+    }
+    
+}

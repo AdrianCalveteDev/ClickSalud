@@ -20,7 +20,7 @@
                     <a href="pages/blog.php">Blog</a>
                     <a href="pages/contacto.php">Contacto</a>
                     <a href="pages/faq.php">FAQ</a>
-                    <a class="header-nav_enlaces-login" href="pages/login.php">Iniciar sesión</a>
+                    <a class="header-nav_enlaces-enlace" href="pages/login.php">Iniciar sesión</a>
                 </nav>
             </div>
         </div>

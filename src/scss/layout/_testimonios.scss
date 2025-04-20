@@ -1,0 +1,47 @@
+
+.contenedor-testimonios{
+    width: 95%;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+    @include tablet {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+        justify-items: center;
+        max-width: 80rem;
+        img {
+            width: 80%;
+        }
+    }
+}
+
+
+.testimonios {
+    background-color: $verdeSecundario;
+    font-size: 2.2rem;
+    padding: 2rem;
+    color: $blanco;
+    border-radius: 2rem;
+    margin-top: 1rem;
+
+    blockquote{
+        padding-left: 5rem;
+        position: relative;
+
+        &::before{ // Colocamos las comillas del testimonio antes del blockquote con el pseudoelemento before
+            content: '';
+            background-image: url(../../../build/img/comilla.svg);
+            background-repeat: no-repeat;
+            width: 6rem;
+            height: 8rem;
+            display: block; // Si no colocamos un display el background-image no se va a mostrar
+            position: absolute; //Utilizamos la posición absoluta para colocar el elemento de comillas donde queramos
+            left: -2rem; // posicionamos las comillas donde queremos
+        }
+    }
+
+    p {// Nombre del usuario que da el testimonio
+        text-align: right; //Colocamos el testimonio a la derecha
+        color: $blanco;
+    }
+}

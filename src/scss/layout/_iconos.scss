@@ -1,0 +1,16 @@
+@include tablet {
+    .beneficios-ventajas {
+        @include grid (3, 2rem);
+    }
+}
+
+.beneficios-ventajas_icono {
+    text-align: center;
+    img{
+        height: 10rem;
+        color: $rosa;
+    }
+    h3 {
+        text-transform: uppercase;
+    }
+}

@@ -1,18 +1,48 @@
 /** Media Queries **/
+// Tamaño en pantallas de teléfono
 @mixin telefono {
     @media (min-width: #{$telefono}) {
         @content;
     }
 }
 
+// Tamaño en pantallas de tablets
 @mixin tablet {
     @media (min-width: #{$tablet}) {
         @content;
     }
 }
-  
+
+// Aplicando a tamaños de pantalla de escritorio más pequeños (portatiles)
 @mixin desktop {
     @media (min-width: #{$desktop}) {
         @content;
+    }
+}
+
+// Mixin para tener una base de grid para la colocación de elementos en cuadriculas
+@mixin grid($columnas, $espaciado ) { // Pasamos por parametro el número de columnas y el espacio entre ellas
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: repeat($columnas, 1fr);
+}
+
+// Mixin para tener una base para un botón
+@mixin boton($bgColor, $display, $hoverBgColor: darken($bgColor, 5)){ // Le pasamos  el color de fondo, el tipo de display y el hover
+    background-color: $bgColor;
+    color: $blanco;
+    font-weight: $negrita;
+    text-decoration: none;
+    padding: 1rem 3rem;
+    text-align: center;
+    margin-top: 2.5rem;
+    display: $display;
+    border: none;
+    text-transform: uppercase;
+    border-radius: .8rem;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $hoverBgColor;
     }
 }

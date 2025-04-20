@@ -26,19 +26,34 @@
 
         @include tablet {
             margin-right: 2rem;
-            font-size: 1.8rem;
-            &:last-of-type{
-                margin-right: 0;
-            }
+            font-size: 1.8rem;  
         }
     }
 
 }
+
 .header-nav_enlaces-login{
+    @include tablet {
+        display: flex;
+        flex-direction: column;    
+        align-items: flex-end;
+        margin-left: 2rem;
+    }
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-nav_enlaces-enlace{
     color: $verdePrimario!important;
     border: 2px solid $verdePrimario;
     border-radius: 1rem;
-    padding: 0 .5rem;
+    padding: 1rem 0;
+    margin: .75rem 0;
+
+    @include tablet {
+        padding: 0 .5rem;
+        margin: 0;
+    }
 
     &:hover{
         color: $rosa!important;

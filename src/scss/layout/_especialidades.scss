@@ -1,0 +1,18 @@
+@include tablet {
+    .contenedor-especialidades {
+        @include grid (3, 3rem);
+    }
+}
+
+.especialidad {
+    background-color: $rosa;
+    border: 1px solid $gris;
+    text-align: center;
+    padding: 2rem;
+    border-radius: 2rem;
+    box-shadow: 10px 8px 10px $gris;
+    p, h2 {
+        
+        margin: 1rem 0;
+    }
+}
