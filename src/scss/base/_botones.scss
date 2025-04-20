@@ -10,3 +10,7 @@
     @include boton($amarillo, inline-block);
     color: $negro;
 }
+
+.boton-rosa {
+    @include boton($rosa, inline-block);
+}

@@ -22,7 +22,7 @@
                 <path d="M12 5.5l3 1.5" />
             </svg>
             <p>Cuidado dental completo para una sonrisa impecable.</p>
-            <a href="#" class="boton-verde-block">Ver detalles</a>
+            <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
         </div> <!--ESPECIALIDAD-->
             <div class="especialidad">
                 <h2>Estética</h2>
@@ -42,7 +42,7 @@
                     <path d="M9 3l3 2l3 -2" />
                 </svg>
                 <p>Tratamientos para realizar la belleza natural.</p>
-                <a href="#" class="boton-verde-block">Ver detalles</a>
+                <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
             </div> <!--ESPECIALIDAD-->
             <div class="especialidad">
                 <h2>Fisioterapia</h2>
@@ -64,25 +64,25 @@
                     <path d="M8 14l3 -2l1 -4c3 1 3 4 3 6" />
                 </svg>
                 <p>Terapia fisica personalizada para la recuperación.</p>
-                <a href="#" class="boton-verde-block">Ver detalles</a>
+                <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
             </div> <!--ESPECIALIDAD-->
             <div class="especialidad">
             <h2>Podología</h2>
                 <img class="especialidad-imagen" src="../build/img/feet.png" alt="Icono para la especialidad de Podología">
             <p>Cuidado experto para el bienestar de tus pies.</p>
-            <a href="#" class="boton-verde-block">Ver detalles</a>
+            <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
         </div> <!--ESPECIALIDAD-->
             <div class="especialidad">
                 <h2>Dermatología</h2>
                     <img class="especialidad-imagen" src="../build/img/cleansing.png" alt="Icono para la especialidad de Dermatología">
                 <p>Tratamientos que cuidan y realzan la salud de tu piel.</p>
-                <a href="#" class="boton-verde-block">Ver detalles</a>
+                <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
             </div> <!--ESPECIALIDAD-->
             <div class="especialidad">
                 <h2>Psicología</h2>
                     <img class="especialidad-imagen" src="../build/img/brain.png" alt="Icono para la especialidad de Psicología">
                 <p>Acompañamiento profesional para tu equilibrio emocional.</p>
-                <a href="#" class="boton-verde-block">Ver detalles</a>
+                <a href="servicio.php" class="boton-verde-block">Ver detalles</a>
             </div> <!--ESPECIALIDAD-->
         </div><!--CONTENEDOR ESPECIALIDAD-->
     </main>

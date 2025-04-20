@@ -1,0 +1,25 @@
+.servicio-imagen{
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.servicio-login{
+    background-color: $amarillo;
+    padding: 2rem 0;
+}
+
+.servicio-texto {
+    p {
+        color: $gris;
+    }
+}
+
+.contenedor-servicio-login {
+    h2 {
+        margin-top: 0;
+        text-transform: uppercase;
+    }
+    max-width: 50rem;
+    margin: 0 auto;
+    text-align: center;
+}
