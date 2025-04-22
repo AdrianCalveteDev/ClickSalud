@@ -1,3 +1,20 @@
+.menu-hamburguesa {
+    width: 8rem;
+    margin: 0 auto;
+
+    @include tablet {
+        display: none;
+    }
+}
+
+.enlace {
+    display: none;
+    @include tablet {
+        display: flex;
+    }
+}
+
+
 .header-nav {
     display: flex;
     flex-direction: column;
@@ -9,6 +26,7 @@
 }
 
 .header-nav_enlaces {
+    display: none;
     @include tablet {
         display: flex;
         align-items: center;
@@ -30,6 +48,10 @@
         }
     }
 
+}
+// Activa el toggle de javascript para mostrar el menú desde el menú hamburguesa
+.header-nav_enlaces.activo {
+    display: block;
 }
 
 .header-nav_enlaces-login{

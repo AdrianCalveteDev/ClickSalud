@@ -1,0 +1,46 @@
+.faq {
+    max-width: 100rem;
+}
+
+.faq-titulo {
+    font-weight: $negrita;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.faq-pregunta h3::before {
+    content: "\25BA"; /* ► Flecha cerrada */
+    margin-right: 1rem;
+    font-size: 2rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.faq-pregunta h3.flecha-abierta::before {
+    content: "\25BC"; /* ▼ Flecha abierta */
+}
+
+/* FAQ toggle */
+.faq-pregunta {
+    margin-bottom: 1rem;
+    border-bottom: 0.2rem solid $rosa;
+    padding-bottom: 1rem;
+}
+.faq-pregunta h3 {
+    cursor: pointer;
+    color: $verdeSecundario;
+    margin: 0;
+    font-weight: $negrita;
+}
+.faq-pregunta p {
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.faq-pregunta a {
+    font-weight: $negrita;
+    color: $verdeSecundario;
+}
