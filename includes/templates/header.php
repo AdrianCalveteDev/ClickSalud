@@ -15,6 +15,7 @@
                     <img src="/build/img/logoClickSaludSmall.png" alt="Logotipo de Click salud">
                 </a>
 
+<<<<<<< HEAD
                 <img class="menu-hamburguesa" src="/build/img/menu-hamburguesa.png" alt="">
                 <nav class="header-nav_enlaces">
                     <!-- Menú hamburguesa -->
@@ -24,6 +25,17 @@
                     <a href="/pages/contacto.php">Contacto</a>
                     <a href="/pages/faq.php">FAQ</a>
                     <a class="header-nav_enlaces-enlace" href="/pages/login.php">Iniciar sesión</a>
+=======
+                <img class="menu-hamburguesa" src="../../build/img/menu-hamburguesa.png" alt="">
+                <nav class="header-nav_enlaces">
+                    <!-- Menú hamburguesa -->
+                    <a href="../pages/nosotros.php">Nosotros</a>
+                    <a href="../pages/servicios.php">Servicios</a>
+                    <!--<a href="../pages/blog.php">Blog</a>-->
+                    <a href="../pages/contacto.php">Contacto</a>
+                    <a href="../pages/faq.php">FAQ</a>
+                    <a class="header-nav_enlaces-enlace" href="../pages/login.php">Iniciar sesión</a>
+>>>>>>> 769f642928f22cab2a07204fa9426ce96225b4a9
                 </nav>
             </div>
         </div>
