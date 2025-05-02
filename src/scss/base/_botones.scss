@@ -6,6 +6,15 @@
     @include boton($verdePrimario, block, $verdeSecundario);
 }
 
+.boton-rojo-block {
+    @include boton($rojoError, block);
+}
+
+.boton-amarillo-block {
+    @include boton($amarillo, block);
+    color: $negro;
+}
+
 .boton-amarillo {
     @include boton($amarillo, inline-block);
     color: $negro;

@@ -6,3 +6,30 @@
     text-transform: uppercase;
     margin: 1rem 0;
 }
+
+.creado {
+    text-align: center;
+    background-color: $verdeExito;
+    padding: .5rem;
+    font-weight: $negrita;
+    text-transform: uppercase;
+    margin: 1rem 0;
+}
+
+table.servicios-lista{
+    margin-top: 4rem;
+    width: 100%;
+    border-spacing: 0;
+
+    thead {
+        background-color: $rosa;
+
+        th {
+            padding: 2rem;
+        }
+    }
+
+    .servicios-lista_imagen {
+        width: 10rem;
+    }
+}

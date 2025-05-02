@@ -1,6 +1,6 @@
 <?php
     // Hacemos obligatorio la inclusión del fichero que contiene la información para conectarse a la base de datos
-    require '../../includes/config/database.php';
+    require '../../../includes/config/database.php';
     $baseDatos = conectarBD(); // Función para conectar la base de datos
 
     // Consulta para obtener las especialidades desde base de datos
@@ -57,7 +57,7 @@
             $errores[] = "La imágen es obligatoria";
         }
         // Validar el tamaño de la imágen, para que el usuario no nos llene el servidor de archivos muy pesados
-        $tamanioMax = 1000 * 400; // bytes a kilobytes = 400kb
+        $tamanioMax = 1000 * 1000; // bytes a kilobytes = 1Mb
         if ($imagen['size'] > $tamanioMax){
             $errores[] = "El peso de la imágen debe ser inferior";
         }
@@ -66,37 +66,51 @@
         if(empty($errores)){
 
             /* Para la subida de imágenes */
-            // Creamos la ruta donde se almacenarán los datos
-            $carpetaImgServicios = '../../imagenes/servicios';
+            // Creamos la carpeta donde se almacenarás las diferente imágenes
+            $carpetaImg = '../../../imagenes';
+            // Creamos la ruta donde se almacenarán las imágenes solo de los servicios
+            $carpetaImgServicios = '../../../imagenes/servicios/';
 
-            // Si la carpeta no existe, la creamos
+            // Si la carpeta principal no existe, la creamos
+            if(!is_dir($carpetaImg)){
+                mkdir($carpetaImg);
+            }
+            // Si la carpeta para almacenar las imagenes de servicios no existe, la creamos
             if(!is_dir($carpetaImgServicios)){
                 mkdir($carpetaImgServicios);
             }
-            
+
+            // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
+            // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
+            $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
+
+            // Subimos la imagen a la carpeta con el método move_upload_file
+            // Como primer parametro le ponemos el nombre temporal del fichero y como segundo parámetro el nombre que le daremos
+            move_uploaded_file($imagen['tmp_name'], $carpetaImgServicios . $nombreImagenServicio);            
 
             // Insertar los datos en la base de datos
-            $query = "INSERT INTO servicios (nombre, descripcion, precio, duracion_min, especialidad_id, imagen, creado_en)
-            VALUES ('$nombre', '$descripcion', '$precio', '$duracion', '$especialidad_id', '$imagen', '$creado_en');
+            $query = "INSERT INTO servicios (nombre, descripcion, precio, duracion_min, especialidad_id, creado_en, imagen)
+            VALUES ('$nombre', '$descripcion', '$precio', '$duracion', '$especialidad_id', '$creado_en', '$nombreImagenServicio');
             ";
 
             $resultado = mysqli_query($baseDatos, $query);
 
+
             if($resultado){
                 //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
-                header('Location: /admin');
+                header('Location: /admin/propiedades/servicios/index.php?resultado=1');
             }
         }
         
     }
 
-    include '../../includes/templates/header.php';
+    include '../../../includes/templates/header.php';
 ?>
 
     <main class="formulario">
         <h1>Crear nuevo servicio</h1>
 
-        <a href="/admin/index.php" class="boton-verde">Volver</a>
+        <a href="/admin/propiedades/servicios/index.php" class="boton-verde">Volver</a>
 
         <!-- Fragmento de código PHP para mostrar los errores que contenga el array, si es que tuviese alguno -->
         <?php foreach($errores as $error): ?>
@@ -105,7 +119,7 @@
             </div>
         <?php endforeach; ?>    
 
-        <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data"> <!-- enctype nos permite leer mejor el contenido de los archivos que se envíen desde el formulario --> 
+        <form class="formulario" method="POST" action="/admin/propiedades/servicios/crear.php" enctype="multipart/form-data"> <!-- enctype nos permite leer mejor el contenido de los archivos que se envíen desde el formulario --> 
             <fieldset>
                 <legend>Información general del servicio</legend>
 
@@ -143,5 +157,5 @@
     </main>
 
 <?php
-    include '../../includes/templates/footer.php';
+    include '../../../includes/templates/footer.php';
 ?>
