@@ -22,6 +22,8 @@
         <h1>Servicios de ClickSalud</h1>
         <?php if(intval($resultado) === 1): ?>
             <p class="creado">Servicio creado correctamente</p>
+        <?php elseif(intval($resultado) ===2): ?>
+            <p class="creado">Servicio actualizado correctamente</p>        
         <?php endif ?>    
         <a href="/admin/index.php" class="boton-verde">Volver</a>
         <a href="/admin/propiedades/servicios/crear.php" class="boton-verde">Crear</a>
@@ -49,7 +51,7 @@
                         <td><?php echo $servicio['duracion_min'];?>min.</td>
                         <td>
                             <a class="boton-rojo-block" href="#">Eliminar</a>
-                            <a class="boton-amarillo-block" href="#">Actualizar</a>
+                            <a class="boton-amarillo-block" href="actualizar.php?id=<?php echo $servicio['id'];?>">Actualizar</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
