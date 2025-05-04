@@ -8,6 +8,7 @@
 
 .boton-rojo-block {
     @include boton($rojoError, block);
+    width: 100%;
 }
 
 .boton-amarillo-block {
