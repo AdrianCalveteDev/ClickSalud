@@ -1,4 +1,13 @@
 <?php
+    // Importamos el archivo de funciones
+    require '../../../includes/funciones.php';
+    // Generamos una variable bool para saber si un usuario se ha autenticado
+    $autenticado = autenticar();
+
+    // Si no está autenticado, lo redirigimos a la home de la página
+    if(!$autenticado){
+        header('Location: /');
+    }
 
     // Variable con el ID del servicio, donde nos aseguramos de que solo pueda ser un dato de tipo integer
     // Esto evita que alguien intente pasar un dato no valido, evita SQL injection y XSS

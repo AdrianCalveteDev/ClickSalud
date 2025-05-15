@@ -1,3 +1,14 @@
+<?php
+    // Comprobamos que la variable de sesión no está iniciada para caso contrario mantener la sesión del usuario desde el header
+    if(!isset($_SESSION)){
+        session_start();
+    }
+
+    // Declaramos la variable autenticado al contenido de login de la suberglobal SESSION y si no existe le asignamos valor null
+    $autenticado = $_SESSION['login'] ?? false;
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,7 +34,11 @@
                     <!--<a href="../pages/blog.php">Blog</a>-->
                     <a href="../pages/contacto.php">Contacto</a>
                     <a href="../pages/faq.php">FAQ</a>
-                    <a class="header-nav_enlaces-enlace" href="../pages/login.php">Iniciar sesión</a>
+                    <?php if(!$autenticado): ?>
+                        <a class="header-nav_enlaces-enlace" href="../pages/login.php">Iniciar sesión</a>
+                    <?php elseif ($autenticado): ?>
+                        <a class="header-nav_enlaces-enlace" href="../pages/logout.php">Cerrar sesión</a>
+                    <?php endif; ?>
                 </nav>
             </div>
         </div>
