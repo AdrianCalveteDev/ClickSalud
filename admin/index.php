@@ -1,6 +1,6 @@
 <?php
     // Importamos el archivo de funciones
-    require '../includes/funciones.php';
+    require '../includes/app.php';
     // Generamos una variable bool para saber si un usuario se ha autenticado
     $autenticado = autenticar();
 

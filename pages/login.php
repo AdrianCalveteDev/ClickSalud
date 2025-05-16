@@ -1,7 +1,7 @@
 <?php
 
     // Importar conexiones de la base de datos.
-    require '../includes/config/database.php';
+    require '../includes/app.php';
     $baseDatos = conectarBD();
 
     // Autenticar el usuario

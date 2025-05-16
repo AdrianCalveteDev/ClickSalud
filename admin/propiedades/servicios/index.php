@@ -1,7 +1,7 @@
 <?php
 
     // Importar la conexión
-    require '../../../includes/config/database.php';
+    require '../../../includes/app.php';
     $baseDatos = conectarBD();
 
     // Query de la base de datos

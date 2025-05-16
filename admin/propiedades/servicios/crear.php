@@ -1,14 +1,23 @@
 <?php
     // Hacemos obligatorio la inclusión del fichero que contiene la información para conectarse a la base de datos
-    require '../../../includes/config/database.php';
+    require '../../../includes/app.php';
+
+    // Y hacemos uso de la clase Servicios que usaremos para crearlo
+    use App\Servicio;
+    use Intervention\Image\Drivers\Gd\Driver;
+    // Libreria de intervetion/image cargada desde composer para la subida de archivos.
+    use Intervention\Image\ImageManager as Image;
+
+    autenticar();
+
     $baseDatos = conectarBD(); // Función para conectar la base de datos
 
     // Consulta para obtener las especialidades desde base de datos
     $consulta = "SELECT * FROM especialidades";
     $resultadoEspecialidad = mysqli_query($baseDatos, $consulta);
 
-    // Array para almacenar los errores
-    $errores = [];
+    // Array para almacenar los errores desde el metodo estático de la clase
+    $errores = Servicio::getErrores();
 
     // Asignamos las variables vacías (en el formulario aprovecharemos la variable para la persistencia del dato en caso de que el formulario)
     // no se pueda enviar a causa de alguno de los errores de validación.
@@ -21,81 +30,41 @@
 
     // Comprobamos si el metodo de envío del formulario es de tipo POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-        // Asignamos a las variables el contenido que llega desde el formulario
-        // Con mysqli_real_escape_string sanitizamos la entrada a bbdd y evitamos sql injection y XSS
-        $especialidad_id = mysqli_real_escape_string($baseDatos, $_POST['especialidad']);
-        $nombre = mysqli_real_escape_string($baseDatos, $_POST['nombre']);
-        $descripcion = mysqli_real_escape_string($baseDatos, $_POST['descripcion']);
-        // Asociar archivos a una variable
-        $imagen = $_FILES['imagen'];
-        $precio = mysqli_real_escape_string($baseDatos, $_POST['precio']);
-        $duracion = mysqli_real_escape_string($baseDatos, $_POST['duracion']);
-        // Rellenar campo de auditoría para saber cuando se ha creado el registro
-        $creado_en = date('Y-m-d H:i:s');
 
-        /* VALIDAMOS LOS DATOS DEL FORMULARIO */
-        // Si no se selecciona una especialidad, llenamos el array con el error.
-        if(!$especialidad_id){
-            $errores[] = "Es necesario seleccionar una especialidad";
+        // Creamos una instancia de nuestra clase Servicio
+        $servicio = new Servicio($_POST);
+
+        // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
+        // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
+        $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
+        if($_FILES['imagen']['tmp_name']){
+            $manager = new Image(Driver::class);
+            $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $servicio->setImagen($nombreImagenServicio);
         }
 
-        // Si el nombre no se rellena, llenamos el array de errores con el error correspondiente.
-        if(!$nombre) {
-            $errores[] = "El nombre es obligatorio";
-        }
-        // Si no se pone un precio, le indicamos al usuario mediante mensaje de error que es obligatio.
-        if(!$precio){
-            $errores[] = "El precio es obligatorio";
-        }
-        // De la misma manera, indicamos al usuario que debe definir la duración del servicio.
-        if(!$duracion){
-            $errores[] = "Debes definir la duración del servicio en minutos";
-        }
-        // Como la imagen la extraemos con la superglobal $_FILE, se nos genera un array asociativo mediante el cual podemos verificar diferentes
-        // propiedades, entre ellas el nombre, podemos validar que si no tiene un nombre le lanzaremos error al usuario.
-        if(!$imagen['name'] || $imagen['error']){
-            $errores[] = "La imágen es obligatoria";
-        }
-        // Validar el tamaño de la imágen, para que el usuario no nos llene el servidor de archivos muy pesados
-        $tamanioMax = 1000 * 1000; // bytes a kilobytes = 1Mb
-        if ($imagen['size'] > $tamanioMax){
-            $errores[] = "El peso de la imágen debe ser inferior";
-        }
+        // Asignamos a una variable errores nuestro metodo getter estatico para recoger los errores de validación
+        $errores = $servicio->validar();
+
 
         // Miramos que el arreglo de los errores esté vacío con el método empty de PHP y si está vacío ejecutamos la query contra la BBDD
         if(empty($errores)){
 
             /* Para la subida de imágenes */
-            // Creamos la carpeta donde se almacenarás las diferente imágenes
-            $carpetaImg = '../../../imagenes';
-            // Creamos la ruta donde se almacenarán las imágenes solo de los servicios
-            $carpetaImgServicios = '../../../imagenes/servicios/';
 
             // Si la carpeta principal no existe, la creamos
-            if(!is_dir($carpetaImg)){
-                mkdir($carpetaImg);
+            if(!is_dir(CARPETA_IMAGENES)){
+                mkdir(CARPETA_IMAGENES);
             }
             // Si la carpeta para almacenar las imagenes de servicios no existe, la creamos
-            if(!is_dir($carpetaImgServicios)){
-                mkdir($carpetaImgServicios);
+            if(!is_dir(CARPETA_IMAGENES_SERVICIOS)){
+                mkdir(CARPETA_IMAGENES_SERVICIOS);
             }
 
-            // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
-            // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
-            $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
+            // Guardar la imagen en el servidor
+            $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
 
-            // Subimos la imagen a la carpeta con el método move_upload_file
-            // Como primer parametro le ponemos el nombre temporal del fichero y como segundo parámetro el nombre que le daremos
-            move_uploaded_file($imagen['tmp_name'], $carpetaImgServicios . $nombreImagenServicio);            
-
-            // Insertar los datos en la base de datos
-            $query = "INSERT INTO servicios (nombre, descripcion, precio, duracion_min, especialidad_id, creado_en, imagen)
-            VALUES ('$nombre', '$descripcion', '$precio', '$duracion', '$especialidad_id', '$creado_en', '$nombreImagenServicio');
-            ";
-
-            $resultado = mysqli_query($baseDatos, $query);
-
-
+            $resultado = $servicio->crearRegistro();
             if($resultado){
                 //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
                 header('Location: /admin/propiedades/servicios/index.php?resultado=1');
@@ -124,7 +93,7 @@
                 <legend>Información general del servicio</legend>
 
                 <label for="especialidad">Especialidad</label>
-                <select name="especialidad" id="especialidad">
+                <select name="especialidad_id" id="especialidad">
                     <option value="" default>-- Seleccione --</option>
                     <!-- Cargamos en las diferentes especialidades desde base de datos haciendo uso de fetch_assoc, que devuelve un array 
                     asociativo donde podemos ir recogiendo los valores con el nombre de las columnas de la tabla -->
@@ -147,7 +116,7 @@
                 <input name="precio" type="number" id="precio" placeholder="Precio del servicio" value="<?php echo $precio;?>">
 
                 <label for="duracion">Duración (min):</label>
-                <input name="duracion" type="number" id="duracion" placeholder="Duración en minutos" min="30" max="120" value="<?php echo $duracion;?>">
+                <input name="duracion_min" type="number" id="duracion" placeholder="Duración en minutos" min="30" max="120" value="<?php echo $duracion;?>">
 
             </fieldset>
 

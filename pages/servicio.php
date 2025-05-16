@@ -7,7 +7,7 @@
     }
 
     // Importar base de datos
-    require '../includes/config/database.php';
+    require '../includes/app.php';
     $baseDatos = conectarBD();
     // Consultar especialidades
     $queryEspecialidad = "SELECT * FROM especialidades WHERE id = $id";

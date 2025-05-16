@@ -1,0 +1,19 @@
+{
+    "name": "adrian/click-salud",
+    "description": "Adición de dependencias de composer para el proyecto clicksalud",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Adrián Calvete",
+            "email": "adriancalvetedev@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
