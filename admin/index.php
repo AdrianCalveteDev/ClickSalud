@@ -2,12 +2,9 @@
     // Importamos el archivo de funciones
     require '../includes/app.php';
     // Generamos una variable bool para saber si un usuario se ha autenticado
-    $autenticado = autenticar();
-
+    autenticar();
     // Si no está autenticado, lo redirigimos a la home de la página
-    if(!$autenticado){
-        header('Location: /');
-    }
+   
 
     $resultado = $_GET['resultado'] ?? null;
     include '../includes/templates/header.php';

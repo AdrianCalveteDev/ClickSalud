@@ -12,21 +12,14 @@
 
     $baseDatos = conectarBD(); // Función para conectar la base de datos
 
+    $servicio = new Servicio;
+
     // Consulta para obtener las especialidades desde base de datos
     $consulta = "SELECT * FROM especialidades";
     $resultadoEspecialidad = mysqli_query($baseDatos, $consulta);
 
     // Array para almacenar los errores desde el metodo estático de la clase
     $errores = Servicio::getErrores();
-
-    // Asignamos las variables vacías (en el formulario aprovecharemos la variable para la persistencia del dato en caso de que el formulario)
-    // no se pueda enviar a causa de alguno de los errores de validación.
-    $especialidad_id = '';
-    $nombre = '';
-    $descripcion = '';
-    $imagen = '';
-    $precio = '';
-    $duracion = '';
 
     // Comprobamos si el metodo de envío del formulario es de tipo POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -89,36 +82,9 @@
         <?php endforeach; ?>    
 
         <form class="formulario" method="POST" action="/admin/propiedades/servicios/crear.php" enctype="multipart/form-data"> <!-- enctype nos permite leer mejor el contenido de los archivos que se envíen desde el formulario --> 
-            <fieldset>
-                <legend>Información general del servicio</legend>
-
-                <label for="especialidad">Especialidad</label>
-                <select name="especialidad_id" id="especialidad">
-                    <option value="" default>-- Seleccione --</option>
-                    <!-- Cargamos en las diferentes especialidades desde base de datos haciendo uso de fetch_assoc, que devuelve un array 
-                    asociativo donde podemos ir recogiendo los valores con el nombre de las columnas de la tabla -->
-                    <?php while($especialidad = mysqli_fetch_assoc($resultadoEspecialidad)): ?>
-                        <!-- Operador ternario para evaluar si el id ya está asignado o no, pare realizar la persistencia del dato -->
-                        <option <?php echo $especialidad_id === $especialidad['id'] ? 'selected': '' ?> value="<?php echo $especialidad['id'] ?>"><?php echo $especialidad['nombre']?></option>
-                    <?php endwhile ?>
-                </select>
-
-                <label for="nombre">Nombre:</label>
-                <input name="nombre" type="text" placeholder="Nombre del servicio" value="<?php echo $nombre; ?>">
-
-                <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion" id="descripcion" placeholder="Descripción del servicio"><?php echo $descripcion;?></textarea>
-
-                <label for="imagen">Imágen</label>
-                <input name="imagen" type="file" id="imagen" accept="image/png, image/jpeg">
-
-                <label for="precio">Precio:</label>
-                <input name="precio" type="number" id="precio" placeholder="Precio del servicio" value="<?php echo $precio;?>">
-
-                <label for="duracion">Duración (min):</label>
-                <input name="duracion_min" type="number" id="duracion" placeholder="Duración en minutos" min="30" max="120" value="<?php echo $duracion;?>">
-
-            </fieldset>
+            
+            <!-- Incluimos el template del formulario -->
+            <?php include '../../../includes/templates/formulario_servicio.php' ?> 
 
             <input type="submit" value="Crear servicio" class="boton-verde">
         </form>

@@ -34,7 +34,7 @@ class Servicio {
         $this->descripcion = $args['descripcion'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->duracion_min = $args['duracion_min'] ?? '';
-        $this->especialidad_id = $args['especialidad_id'] ?? '';
+        $this->especialidad_id = $args['especialidad_id'] ?? 1;
         $this->creado_en = date('Y-m-d H:i:s');
         $this->actualizado_en = date('Y-m-d H:i:s');
         $this->imagen = $args['imagen'] ?? '';
@@ -51,7 +51,9 @@ class Servicio {
         $query .= join("', '", array_values($datos));
         $query .= " ') ";
         
-        $resultado = self::$baseDatos->query($query); 
+        $resultado = self::$baseDatos->query($query);
+
+        return $resultado;
 
     }
 
@@ -110,6 +112,42 @@ class Servicio {
         if($imagen){
             $this->imagen =$imagen;
         }
+    }
+
+    // READ
+    // Listar todos los servicios
+    public static function all(){
+        $query = "SELECT * FROM servicios;";
+        $resultado = self::consultaSQL($query);
+
+        return $resultado;
+    }
+    public static function consultaSQL($query){
+        // Consultar la base de datos
+        $resultado = self::$baseDatos->query($query);
+
+        // Iterar los resultados
+        $array = [];
+        while($registro = $resultado->fetch_assoc()){
+            $array[] = self::crearObjeto($registro);
+        }
+
+        // Liberar la memoria
+        $resultado->free();
+
+        // Recuperar los resultados
+        return $array;
+    }
+    protected static function crearObjeto($registro){
+        $objeto = new self;
+
+        foreach($registro as $llave => $valor) {
+            if(property_exists($objeto, $llave)){
+                $objeto->$llave = $valor;
+            }
+        }
+
+        return $objeto;
     }
 
     

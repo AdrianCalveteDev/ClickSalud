@@ -2,13 +2,12 @@
 
     // Importar la conexión
     require '../../../includes/app.php';
-    $baseDatos = conectarBD();
+    autenticar();
 
-    // Query de la base de datos
-    $query = "SELECT * FROM servicios";
+    use App\Servicio;
 
-    // Consulta a la base de datos
-    $resultadoQuery = mysqli_query($baseDatos, $query);
+    // Implementamos metodo para obtener los servicios
+    $servicios = Servicio::all();
 
     // Muestra mensaje según la acción que suceda
     $resultado = $_GET['resultado'] ?? null;
@@ -65,27 +64,25 @@
                 </tr>
             </thead>
             <tbody> <!-- Mostrar los resultados de la base de datos -->
-                <!-- Mientras que la variable de servicios encuentre un resultado en la query, lo convertimos en un array asociativo
-                para poder ir iterando sobre sus propiedades (nombre de las columnas)  -->
-                <?php while($servicio = mysqli_fetch_assoc($resultadoQuery)): ?>
+                <?php foreach( $servicios as $servicio ): ?>
                     <tr>
-                        <td><?php echo $servicio['id'];?></td>
-                        <td><?php echo $servicio['nombre'];?></td>
-                        <td><img src="/imagenes/servicios/<?php echo $servicio['imagen'];?>" class="servicios-lista_imagen" alt=""></td>
-                        <td><?php echo $servicio['precio'];?>€</td>
-                        <td><?php echo $servicio['duracion_min'];?>min.</td>
+                        <td><?php echo $servicio->id;?></td>
+                        <td><?php echo $servicio->nombre;?></td>
+                        <td><img src="/imagenes/servicios/<?php echo $servicio->imagen;?>" class="servicios-lista_imagen" alt=""></td>
+                        <td><?php echo $servicio->precio;?>€</td>
+                        <td><?php echo $servicio->duracion_min;?>min.</td>
                         <td>
                         <!-- GENERAMOS UN FORMULARIO PARA DARLE LA POSIBILIDAD AL USUARIO DE ELIMINAR EL REGISTRO -->
                             <form method="POST">
                                 <!-- Input auxiliar oculto para recoger el ID del servicio a eliminar -->
-                                <input type="hidden" name="id" value="<?php echo $servicio['id']; ?>">
+                                <input type="hidden" name="id" value="<?php echo $servicio->id; ?>">
 
                                 <input type="submit" value="Eliminar" class="boton-rojo-block">
                             </form>
-                            <a class="boton-amarillo-block" href="actualizar.php?id=<?php echo $servicio['id'];?>">Actualizar</a>
+                            <a class="boton-amarillo-block" href="actualizar.php?id=<?php echo $servicio->id;?>">Actualizar</a>
                         </td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </main>
