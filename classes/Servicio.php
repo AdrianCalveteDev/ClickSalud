@@ -29,7 +29,7 @@ class Servicio {
     // Creamos el constructor de la clase
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->nombre = $args['nombre'] ?? '';
         $this->descripcion = $args['descripcion'] ?? '';
         $this->precio = $args['precio'] ?? '';
@@ -41,7 +41,7 @@ class Servicio {
     }
 
     public function guardar(){
-        if(isset($this->id)){
+        if(!is_null($this->id)){
             // actualizamos el registro
             $this->actualizarRegistro();
         } else {
@@ -63,7 +63,10 @@ class Servicio {
         
         $resultado = self::$baseDatos->query($query);
 
-        return $resultado;
+        if($resultado){
+            //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
+            header('Location: /admin/propiedades/servicios/index.php?resultado=1');
+        }
 
     }
 
@@ -90,6 +93,20 @@ class Servicio {
         } else {
             // Mostrar el error (para debuguear)
             // echo "Error en la consulta: " . mysqli_error($baseDatos);
+        }
+    }
+
+    // Eliminar un registro
+    public function eliminarServicio(){
+
+        // Query para eliminar el servicio por su ID
+        $queryEliminarServicio = "DELETE FROM servicios WHERE id = " . self::$baseDatos->escape_string($this->id) . " LIMIT 1";
+        $resultado = self::$baseDatos->query($queryEliminarServicio);
+
+        // Si hay un registro eliminado redirigimos al usuario al index de administrador con el id para resultado de 3
+        if ($resultado){
+            $this->borrarImagen();
+            header('Location: /admin/propiedades/servicios/index.php?resultado=3');
         }
     }
 
@@ -146,17 +163,27 @@ class Servicio {
 
     public function setImagen($imagen){
         // Eliminar la imagen previa (si existe)
-        if(isset($this->id)){
+        if(!is_null($this->id)){
             // Comprobamos si existe el archivo para no generar errores
-            $archivoExite = file_exists(CARPETA_IMAGENES . CARPETA_IMAGENES_SERVICIOS . $this->imagen);
-            if($archivoExite){
-                unlink(CARPETA_IMAGENES . CARPETA_IMAGENES_SERVICIOS . $this->imagen);
-            }
+            $this->borrarImagen();
         }
 
         // Asignamos al atributo imagen el nombre de la imagen y lo guardamos en memoria
         if($imagen){
             $this->imagen =$imagen;
+        }
+    }
+
+    // Eliminar archivo
+    public function borrarImagen(){
+        // Comprobamos si existe el archivo para no generar errores
+        $archivoExite = file_exists(CARPETA_IMAGENES_SERVICIOS . $this->imagen);
+        if($archivoExite){
+            unlink(CARPETA_IMAGENES_SERVICIOS  .$this->imagen);
+        } else {
+            // echo "El archivo no existe";
+            // echo "/../../../imagenes/servicios/".$this->imagen;
+            // exit;
         }
     }
 

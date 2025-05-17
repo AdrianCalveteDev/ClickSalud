@@ -57,11 +57,7 @@
             // Guardar la imagen en el servidor
             $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
 
-            $resultado = $servicio->guardar();
-            if($resultado){
-                //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
-                header('Location: /admin/propiedades/servicios/index.php?resultado=1');
-            }
+            $servicio->guardar();
         }
         
     }

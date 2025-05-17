@@ -15,23 +15,15 @@
 
     // Cuando se envíe el formulario de eliminar, asignamos a la variable el ID del servicio
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-        $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+        $idServicio = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
-        if($id){
+        if($idServicio){
 
-            // Eliminar la imagen asociada al servicio
-            $queryEliminarImagen = "SELECT imagen FROM servicios WHERE id = $id";
-            $resultadoElimnarImagen = mysqli_query($baseDatos, $queryEliminarImagen);
-            $servicio = mysqli_fetch_assoc($resultadoElimnarImagen);
-            unlink('../../imagenes/servicios' . $servicio['imagen']);
+            // Obtenemos los datos del servicio
+            $servicio = Servicio::buscarServicio($idServicio);
 
-            // Eliminamos de la base de datos con la query correspondiente
-            $queryEliminarServicio = "DELETE FROM servicios WHERE id = $id";
-            $resultadoEliminarServicio = mysqli_query($baseDatos, $queryEliminarServicio);
-
-            if ($resultadoEliminarServicio){
-                header('Location: /admin/propiedades/servicios/index.php?resultado=3');
-            }
+            $servicio->eliminarServicio();        
+            
         }   
     }
 
