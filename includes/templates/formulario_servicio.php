@@ -4,12 +4,17 @@
     <label for="especialidad">Especialidad</label>
     <select name="servicio[especialidad_id]" id="especialidad">
         <option value="" default>-- Seleccione --</option>
-        <!-- Cargamos en las diferentes especialidades desde base de datos haciendo uso de fetch_assoc, que devuelve un array 
-        asociativo donde podemos ir recogiendo los valores con el nombre de las columnas de la tabla -->
-        <?php while($especialidad = mysqli_fetch_assoc($resultadoEspecialidad)): ?>
-        <!-- Operador ternario para evaluar si el id ya está asignado o no, pare realizar la persistencia del dato -->
-        <option <?php echo s($servicio->especialidad_id) === $especialidad['id'] ? 'selected': '' ?> value="1"><?php echo $especialidad['nombre']?></option>
-        <?php endwhile ?>
+        <!-- Cargamos en las diferentes especialidades desde base de datos haciendo uso de active record, que devuelve un objeto 
+        que recorremos con un foreach donde podemos ir recogiendo los valores del objeto apuntando con sintaxis de flecha a la 
+        propiedad correspondiente -->
+        <?php foreach($especialidades as $especialidad) {?>
+            <!-- Validamos en el ternario que tenga un valor por si saltan las validaciones mantener el dato que había seleccionado
+             el usuario -->
+            <option
+                <?php echo $servicio->especialidad_id === $especialidad->id ? 'selected' : ''; ?> 
+                value="<?php echo s($especialidad->id); ?>"><?php echo s($especialidad->nombre) ?>
+            </option>
+        <?php } ?>    
     </select>
 
     <label for="nombre">Nombre:</label>

@@ -2,6 +2,7 @@
     // Hacemos obligatorio la inclusión del fichero que contiene la información para conectarse a la base de datos
 
     use App\Servicio;
+    use App\Especialidad;
     use Intervention\Image\Drivers\Gd\Driver;
     // Libreria de intervetion/image cargada desde composer para la subida de archivos.
     use Intervention\Image\ImageManager as Image;
@@ -21,11 +22,10 @@
     }
 
     // Obtenemos los datos del servicio
-    $servicio = Servicio::buscarServicio($idServicio);
+    $servicio = Servicio::buscar($idServicio);
 
     // Consulta para obtener las especialidades desde base de datos
-    $consulta = "SELECT * FROM especialidades";
-    $resultadoEspecialidad = mysqli_query($baseDatos, $consulta);
+    $especialidades = Especialidad::all();
 
     // Array para almacenar los errores
     $errores = Servicio::getErrores();

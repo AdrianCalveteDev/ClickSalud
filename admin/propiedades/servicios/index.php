@@ -4,10 +4,12 @@
     require '../../../includes/app.php';
     autenticar();
 
+    use App\Especialidad;
     use App\Servicio;
 
     // Implementamos metodo para obtener los servicios
     $servicios = Servicio::all();
+    $especialidades = Especialidad::all();
 
     // Muestra mensaje según la acción que suceda
     $resultado = $_GET['resultado'] ?? null;
@@ -20,9 +22,9 @@
         if($idServicio){
 
             // Obtenemos los datos del servicio
-            $servicio = Servicio::buscarServicio($idServicio);
+            $servicio = Servicio::buscar($idServicio);
 
-            $servicio->eliminarServicio();        
+            $servicio->eliminar();        
             
         }   
     }

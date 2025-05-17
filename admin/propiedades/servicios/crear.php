@@ -2,21 +2,19 @@
     // Hacemos obligatorio la inclusión del fichero que contiene la información para conectarse a la base de datos
     require '../../../includes/app.php';
 
-    // Y hacemos uso de la clase Servicios que usaremos para crearlo
+    // Y hacemos uso de las clases Servicio y Especialidad que usaremos para crearlos
     use App\Servicio;
+    use App\Especialidad;
     use Intervention\Image\Drivers\Gd\Driver;
     // Libreria de intervetion/image cargada desde composer para la subida de archivos.
     use Intervention\Image\ImageManager as Image;
 
     autenticar();
 
-    $baseDatos = conectarBD(); // Función para conectar la base de datos
-
     $servicio = new Servicio;
 
-    // Consulta para obtener las especialidades desde base de datos
-    $consulta = "SELECT * FROM especialidades";
-    $resultadoEspecialidad = mysqli_query($baseDatos, $consulta);
+    // Consulta para obtener todas las especialidades
+    $especialidades = Especialidad::all();
 
     // Array para almacenar los errores desde el metodo estático de la clase
     $errores = Servicio::getErrores();
