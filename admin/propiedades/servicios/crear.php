@@ -25,14 +25,14 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         // Creamos una instancia de nuestra clase Servicio
-        $servicio = new Servicio($_POST);
+        $servicio = new Servicio($_POST['servicio']);
 
         // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
         // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
         $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
-        if($_FILES['imagen']['tmp_name']){
+        if($_FILES['servicio']['tmp_name']['imagen']){
             $manager = new Image(Driver::class);
-            $imagen = $manager->read($_FILES['imagen']['tmp_name'])->cover(800, 600);
+            $imagen = $manager->read($_FILES['servicio']['tmp_name']['imagen'])->cover(800, 600);
             $servicio->setImagen($nombreImagenServicio);
         }
 
@@ -57,7 +57,7 @@
             // Guardar la imagen en el servidor
             $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
 
-            $resultado = $servicio->crearRegistro();
+            $resultado = $servicio->guardar();
             if($resultado){
                 //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
                 header('Location: /admin/propiedades/servicios/index.php?resultado=1');

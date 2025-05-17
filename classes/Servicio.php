@@ -40,6 +40,16 @@ class Servicio {
         $this->imagen = $args['imagen'] ?? '';
     }
 
+    public function guardar(){
+        if(isset($this->id)){
+            // actualizamos el registro
+            $this->actualizarRegistro();
+        } else {
+            // creamos un nuevo registro
+            $this->crearRegistro();
+        }
+    }
+
     public function crearRegistro(){
         // Sanitizamos los datos para evitar sql injection y XSS
         $datos = $this->sanitizarDatos();
@@ -55,6 +65,32 @@ class Servicio {
 
         return $resultado;
 
+    }
+
+    public function actualizarRegistro(){
+        // Sanitizamos los datos para evitar sql injection y XSS
+        $datos = $this->sanitizarDatos();
+
+        $valores = [];
+        foreach($datos as $llave => $valor){
+            $valores[] = "$llave='$valor'";
+        }
+
+        $query = "UPDATE servicios SET ";
+        $query .= join(', ', $valores);
+        $query .= " WHERE id = '" . self::$baseDatos->escape_string($this->id) . "' ";
+        $query .= " LIMIT 1 ";
+
+        $resultado = self::$baseDatos->query($query);
+
+        if($resultado){
+            //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
+            // pasandole la variable resultado=2 para mostrar mensaje de actualización al usuario
+             header('Location: /admin/propiedades/servicios/index.php?resultado=2');
+        } else {
+            // Mostrar el error (para debuguear)
+            // echo "Error en la consulta: " . mysqli_error($baseDatos);
+        }
     }
 
     // Metodo para IDENTIFICAR y unir los datos de la base de datos
@@ -109,6 +145,16 @@ class Servicio {
     }
 
     public function setImagen($imagen){
+        // Eliminar la imagen previa (si existe)
+        if(isset($this->id)){
+            // Comprobamos si existe el archivo para no generar errores
+            $archivoExite = file_exists(CARPETA_IMAGENES . CARPETA_IMAGENES_SERVICIOS . $this->imagen);
+            if($archivoExite){
+                unlink(CARPETA_IMAGENES . CARPETA_IMAGENES_SERVICIOS . $this->imagen);
+            }
+        }
+
+        // Asignamos al atributo imagen el nombre de la imagen y lo guardamos en memoria
         if($imagen){
             $this->imagen =$imagen;
         }
@@ -122,11 +168,19 @@ class Servicio {
 
         return $resultado;
     }
+    // Buscar un servicio por su id
+    public static function buscarServicio($idServicio) {
+            $queryServicio = "SELECT * FROM servicios WHERE id = $idServicio";
+            $resultado = self::consultaSQL($queryServicio);
+
+            // Devolvemos el primer elemento del array que en el caso del servicio es el id
+            return array_shift($resultado); // array_shift, devuelve el primer elemento de un array
+    }
     public static function consultaSQL($query){
         // Consultar la base de datos
         $resultado = self::$baseDatos->query($query);
 
-        // Iterar los resultados
+        // Iterar los resultados y añadirlos a un array
         $array = [];
         while($registro = $resultado->fetch_assoc()){
             $array[] = self::crearObjeto($registro);
@@ -148,6 +202,15 @@ class Servicio {
         }
 
         return $objeto;
+    }
+
+    // Sincroniza el objeto de active record con los cambios realizado por el usuario en el UPDATE
+    public function sincronizar( $args = [] ){
+        foreach($args as $llave => $valor){
+            if(property_exists($this, $llave) && !is_null($valor)){
+                $this->$llave = $valor;
+            }
+        }
     }
 
     
