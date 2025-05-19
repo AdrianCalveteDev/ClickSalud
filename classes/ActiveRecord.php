@@ -16,17 +16,17 @@ class ActiveRecord{
         self::$baseDatos = $baseDatos;
     }
 
-    public function guardar(){
+    public function guardar($ruta){
         if(!is_null($this->id)){
             // actualizamos el registro
-            $this->actualizarRegistro();
+            $this->actualizarRegistro($ruta);
         } else {
             // creamos un nuevo registro
-            $this->crearRegistro();
+            $this->crearRegistro($ruta);
         }
     }
 
-    public function crearRegistro(){
+    public function crearRegistro($ruta){
         // Sanitizamos los datos para evitar sql injection y XSS
         $datos = $this->sanitizarDatos();
 
@@ -41,12 +41,12 @@ class ActiveRecord{
 
         if($resultado){
             //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
-            header('Location: /admin/propiedades/servicios/index.php?resultado=1');
+            header('Location: ' . $ruta . 'index.php?resultado=1');
         }
 
     }
 
-    public function actualizarRegistro(){
+    public function actualizarRegistro($ruta){
         // Sanitizamos los datos para evitar sql injection y XSS
         $datos = $this->sanitizarDatos();
 
@@ -65,7 +65,7 @@ class ActiveRecord{
         if($resultado){
             //Si el formulario funciona correctamente, redirigimos al usuario a la página del administrador
             // pasandole la variable resultado=2 para mostrar mensaje de actualización al usuario
-             header('Location: /admin/propiedades/servicios/index.php?resultado=2');
+             header('Location: ' . $ruta . 'index.php?resultado=2');
         } else {
             // Mostrar el error (para debuguear)
             // echo "Error en la consulta: " . mysqli_error($baseDatos);
@@ -73,7 +73,7 @@ class ActiveRecord{
     }
 
     // Eliminar un registro
-    public function eliminar(){
+    public function eliminar($ruta){
 
         // Query para eliminar el registro por su ID
         $queryEliminar = "DELETE FROM " . static::$tabla . " WHERE id = " . self::$baseDatos->escape_string($this->id) . " LIMIT 1";
@@ -82,7 +82,7 @@ class ActiveRecord{
         // Si hay un registro eliminado redirigimos al usuario al index de administrador con el id para resultado de 3
         if ($resultado){
             $this->borrarImagen();
-            header('Location: /admin/propiedades/servicios/index.php?resultado=3');
+            header('Location: ' . $ruta . 'index.php?resultado=3');
         }
     }
 
@@ -131,12 +131,29 @@ class ActiveRecord{
         }
     }
 
+    // Setear el logo
+    public function setLogo($logo){
+        // Eliminar la imagen previa (si existe)
+        if(!is_null($this->id)){
+            // Comprobamos si existe el archivo para no generar errores
+            $this->borrarImagen();
+        }
+
+        // Asignamos al atributo imagen el nombre de la imagen y lo guardamos en memoria
+        if($logo){
+            $this->logo = $logo;
+        }
+    }
+
     // Eliminar archivo
     public function borrarImagen(){
         // Comprobamos si existe el archivo para no generar errores
-        $archivoExite = file_exists(CARPETA_IMAGENES_SERVICIOS . $this->imagen);
-        if($archivoExite){
-            unlink(CARPETA_IMAGENES_SERVICIOS  .$this->imagen);
+        $archivoServicioExiste = file_exists(CARPETA_IMAGENES_SERVICIOS . $this->imagen);
+        $archivoEspecialidadExiste = file_exists(CARPETA_IMAGENES_ESPECIALIDADES . $this->imagen);
+        if($archivoServicioExiste){
+            unlink(CARPETA_IMAGENES_SERVICIOS  . $this->imagen);
+        } elseif ($archivoEspecialidadExiste) {
+            unlink(CARPETA_IMAGENES_ESPECIALIDADES . $this->imagen);
         } else {
             // echo "El archivo no existe";
             // echo "/../../../imagenes/servicios/".$this->imagen;
@@ -152,12 +169,12 @@ class ActiveRecord{
 
         return $resultado;
     }
-    // Buscar un servicio por su id
-    public static function buscar($idServicio) {
-            $queryServicio = "SELECT * FROM " . static::$tabla . " WHERE id = $idServicio";
-            $resultado = self::consultaSQL($queryServicio);
+    // Buscar por su id
+    public static function buscar($id) {
+            $query = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
+            $resultado = self::consultaSQL($query);
 
-            // Devolvemos el primer elemento del array que en el caso del servicio es el id
+            // Devolvemos el primer elemento del array
             return array_shift($resultado); // array_shift, devuelve el primer elemento de un array
     }
     public static function consultaSQL($query){

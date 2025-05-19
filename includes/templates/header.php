@@ -6,6 +6,7 @@
 
     // Declaramos la variable autenticado al contenido de login de la suberglobal SESSION y si no existe le asignamos valor null
     $autenticado = $_SESSION['login'] ?? false;
+    $rol = $_SESSION['rol'] ?? '';
 ?>
 
 
@@ -34,6 +35,11 @@
                     <!--<a href="../pages/blog.php">Blog</a>-->
                     <a href="../pages/contacto.php">Contacto</a>
                     <a href="../pages/faq.php">FAQ</a>
+                    <!-- Mostramos opciones por rol-->
+                    <?php if($rol === 'admin'): ?>
+                        <a href="../../admin/">Administrador</a>
+                    <?php endif; ?>
+                    <!-- Según esté autenticado o no, mostramos una opción u otra-->
                     <?php if(!$autenticado): ?>
                         <a class="header-nav_enlaces-enlace" href="../pages/login.php">Iniciar sesión</a>
                     <?php elseif ($autenticado): ?>

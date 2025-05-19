@@ -18,6 +18,8 @@
         <?php endif ?>    
 
         <a href="/admin/propiedades/servicios/index.php" class="boton-verde">Servicios</a>
+        <a href="/admin/propiedades/especialidades/index.php" class="boton-verde">Especialidades</a>
+
 
     </main>
 

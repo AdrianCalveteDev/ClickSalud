@@ -27,9 +27,29 @@ class Especialidad extends ActiveRecord {
         $this->descripcion = $args['descripcion'] ?? '';
         $this->descripcion_larga = $args['descripcion_larga'] ?? '';
         $this->descripcion_larga_2 = $args['descripcion_larga_2'] ?? '';
-        $this->logo = $args['logo'] ?? 1;
+        $this->logo = $args['logo'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
         $this->creado_en = date('Y-m-d H:i:s');
         $this->actualizado_en = date('Y-m-d H:i:s');
+    }
+
+    public function validar(){
+         /* VALIDAMOS LOS DATOS DEL FORMULARIO */
+        // Si el nombre no se rellena, llenamos el array de errores con el error correspondiente.
+        if(!$this->nombre) {
+            self::$errores[] = "El nombre de la especialidad es obligatorio";
+        }
+        // Si no se pone un precio, le indicamos al usuario mediante mensaje de error que es obligatio.
+        if(!$this->descripcion){
+            self::$errores[] = "La descripción es obligatoria";
+        }
+        // De la misma manera, indicamos al usuario que debe definir la duración del servicio.
+        if(!$this->logo){
+            self::$errores[] = "El logo es obligatorio.";
+        }
+        if(!$this->imagen){
+            self::$errores[] = "La imágen es obligatoria";
+        }
+        return self::$errores;
     }
 }

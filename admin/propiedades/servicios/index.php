@@ -24,7 +24,7 @@
             // Obtenemos los datos del servicio
             $servicio = Servicio::buscar($idServicio);
 
-            $servicio->eliminar();        
+            $servicio->eliminar(MENSAJES_SERVICIOS);        
             
         }   
     }
@@ -36,13 +36,11 @@
 
     <main class="contenedor">
         <h1>Servicios de ClickSalud</h1>
-            <?php if(intval($resultado) === 1): ?>
-                <p class="creado">Servicio creado correctamente</p>
-            <?php elseif(intval($resultado) ===2): ?>
-                <p class="creado">Servicio actualizado correctamente</p>
-            <?php elseif(intval($resultado) ===3): ?>
-                <p class="creado">Servicio eliminado correctamente</p>        
-            <?php endif ?>    
+            <?php 
+                $mensaje = mostrarMensaje(intval($resultado), 'Servicio');
+                if ($mensaje) { ?>
+                    <p class="creado"><?php echo s($mensaje) ?></p>
+            <?php } ?>    
         <a href="/admin/index.php" class="boton-verde">Volver</a>
         <a href="/admin/propiedades/servicios/crear.php" class="boton-verde">Crear</a>
 
@@ -82,10 +80,6 @@
     </main>
 
 <?php
-
-    // Cerramos la conexión de la base de datos
-    mysqli_close($baseDatos);
-
     // Importamos el diseño del footer
     include '../../../includes/templates/footer.php';
 ?>

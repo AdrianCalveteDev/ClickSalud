@@ -55,7 +55,7 @@
             // Guardar la imagen en el servidor
             $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
 
-            $servicio->guardar();
+            $servicio->guardar(MENSAJES_SERVICIOS);
         }
         
     }
