@@ -9,11 +9,14 @@
         }
     ],
     "require": {
-        "intervention/image": "3.9"
+        "intervention/image": "3.9",
+        "phpmailer/phpmailer": "^6.10"
     },
     "autoload": {
         "psr-4": {
-            "App\\" : "./classes"
+            "Model\\" : "./models",
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers"
         }
     }
 }

@@ -10,6 +10,6 @@ require __DIR__ . '/../vendor/autoload.php';
 // Nos conectamos a la base de datos
 $baseDatos = conectarBD();
 
-use App\ActiveRecord;
+use Model\ActiveRecord;
 
 ActiveRecord::setBaseDatos($baseDatos);

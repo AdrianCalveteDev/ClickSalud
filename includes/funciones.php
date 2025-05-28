@@ -2,11 +2,12 @@
 
 //include 'app.php';
 
-define('CARPETA_IMAGENES', __DIR__ . '/../imagenes/');
-define('CARPETA_IMAGENES_SERVICIOS', __DIR__ . '/../imagenes/servicios/');
-define('CARPETA_IMAGENES_ESPECIALIDADES', __DIR__ . '/../imagenes/especialidades/');
-define('MENSAJES_SERVICIOS', '/admin/propiedades/servicios/');
-define('MENSAJES_ESPECIALIDADES', '/admin/propiedades/especialidades/');
+define('CARPETA_IMAGENES', $_SERVER['DOCUMENT_ROOT'] . '/imagenes/');
+define('CARPETA_IMAGENES_SERVICIOS', $_SERVER['DOCUMENT_ROOT'] . '/imagenes/servicios/');
+define('CARPETA_IMAGENES_ESPECIALIDADES', $_SERVER['DOCUMENT_ROOT'] . '/imagenes/especialidades/');
+define('MENSAJES_SERVICIOS', '/servicios/admin');
+define('MENSAJES_ESPECIALIDADES', '/especialidades/admin');
+define('MENSAJES_NUEVO_USUARIO', '/crearUsuario');
 
 
 function autenticar(): bool {
@@ -49,6 +50,19 @@ function mostrarMensaje($codigo, $seccion) {
             break;         
     }
     return $mensaje;
+}
+
+function validarORedireccionar(string $url){
+    // Variable con el ID del servicio, donde nos aseguramos de que solo pueda ser un dato de tipo integer
+    // Esto evita que alguien intente pasar un dato no valido, evita SQL injection y XSS
+    $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+
+    // Si se pasa un dato que no es un INT, redirigimos al usuario al panel de administración de los servicios.
+    if (!$id){
+        header("Location: $url");
+    }
+
+    return $id;
 }
 
 ?>

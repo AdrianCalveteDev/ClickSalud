@@ -36,3 +36,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+
+
+/* Muestra telefono o mail en función a lo que seleccione el usuario */
+const metodoContacto = document.querySelectorAll('input[name="contacto[contacto]"]');
+metodoContacto.forEach(input => input.addEventListener('click', mostrarMetodosContacto));    
+
+function mostrarMetodosContacto(evento){
+    const contactoDiv = document.querySelector('#contacto');
+    if(evento.target.value === 'telefono'){
+        contactoDiv.innerHTML = `
+            <label for="telefono">Número teléfono</label>
+            <input type="tel" id="telefono" placeholder="Tu teléfono..." name="contacto[telefono]" required>
+
+            <p>Elija la fecha y la hora para ser contactado:</p>
+            
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="contacto[fecha]" required>
+
+            <label for="hora">Hora</label>
+            <input type="time" id="hora" min="09:00" max="20:00" name="contacto[hora]" required>
+        `;
+    } else {
+        contactoDiv.innerHTML = `
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Tu correo..." name="contacto[email]" required>
+        `;
+    }
+}
