@@ -3,7 +3,7 @@
         <div class="hero">
             <div>
                 <p>Agenda tus consultas médicas online de forma rápida, sencilla y segura. Elige entre especialidades como odontología, fisioterapia o estética, selecciona el profesional que mejor se adapte a ti y reserva tu cita sin complicaciones. ¡Todo desde la aplicación, sin llamadas ni esperas!</p>
-                <a class="boton-verde" href="#">Empieza ahora</a>
+                <a class="boton-verde" href="/login">Empieza ahora</a>
             </div>
             <img class="hero-img" src="build/img/doctora.png" alt="">
         </div>

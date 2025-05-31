@@ -6,25 +6,33 @@
             <?php echo $error; ?>
         </div>
     <?php endforeach; ?>
+    
+    <!-- Si la variable exito se pasa por la URL desde el GET, pintamos un mensaje para dar feedback al usuario-->
+    
+    <?php if(isset($_GET['exito'])): ?>
+        <div class="creado">
+            Usuario creado correctamente.
+        </div>
+    <?php endif; ?>
 
     <form class="formulario contenido-centrado" method="POST" action="/crearUsuario">
         <fieldset>
             <legend>Nuevo Usuario</legend>
 
             <label for="nombre">Nombre</label>
-            <input type="nombre" name="nombre" id="nombre" placeholder="Tu nombre..." require>
+            <input type="text" name="usuario[nombre]" id="nombre" placeholder="Tu nombre..." require>
 
             <label for="apellido">Apellido</label>
-            <input type="apellido" name="apellido" id="apellido" placeholder="Tu apellido..." require>
+            <input type="text" name="usuario[apellido]" id="apellido" placeholder="Tu apellido..." require>
 
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Tu email..." require>
+            <input type="email" name="usuario[email]" id="email" placeholder="Tu email..." require>
 
             <label for="contrasena">Contraseña</label>
-            <input type="password" name="contrasena_hash" id="contrasena" placeholder="Tu contraseña..." require>
+            <input type="password" name="usuario[contrasena_hash]" id="contrasena" placeholder="Tu contraseña..." require>
 
             <label for="repetir_contrasena">Repetir Contraseña</label>
-            <input type="password" name="repetir_contrasena" id="repetir_contrasena" placeholder="Repite tu contraseña..." required>
+            <input type="password" name="usuario[repetirContrasena]" id="repetir_contrasena" placeholder="Repite tu contraseña..." required>
 
         </fieldset>
 

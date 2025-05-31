@@ -2,14 +2,14 @@
 
 namespace Model;
 
-use ReturnTypeWillChange;
-
 class Admin extends ActiveRecord {
     // Base de datos
     protected static $tabla = 'usuarios';
-    protected static $columnasBaseDatos = ['id', 'email', 'contrasena_hash', 'rol'];
+    protected static $columnasBaseDatos = ['id', 'nombre', 'apellido', 'email', 'contrasena_hash', 'rol'];
 
     public $id;
+    public $nombre;
+    public $apellido;
     public $email;
     public $contrasena_hash;
     public $rol;
@@ -17,6 +17,8 @@ class Admin extends ActiveRecord {
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
+        $this->nombre = $args['nombre'] ?? '';
+        $this->apellido = $args['apellido'] ?? '';
         $this->email = $args['email'] ?? '';
         $this->contrasena_hash = $args['contrasena_hash'] ?? '';
         $this->rol = $args['rol'] ?? '';
@@ -59,8 +61,11 @@ class Admin extends ActiveRecord {
             self::$errores[] = 'Contraseña incorrecta';
             return false;
         } else {
-            // Si el usuario existe, almacenamos el rol del
+            // Si el usuario existe, almacenamos el rol del usuario, su id y su nombre
             $this->rol = $usuario->rol;
+            $this->id = $usuario->id;
+            $this->nombre = $usuario->nombre;
+            $this->apellido = $usuario->apellido;
             return true;
         }
     }
@@ -71,14 +76,17 @@ class Admin extends ActiveRecord {
 
         // Llenamos el array con los valores que necesitamos
         $_SESSION['login'] = true;
+        $_SESSION['usuario_id'] = $this->id;
         $_SESSION['usuario'] = $this->email;
         $_SESSION['rol'] = $this->rol;
+        $_SESSION['nombre'] = $this->nombre;
 
         // Si el usuario tiene rol de administrador le redirigimos al panel de administración
         if($this->rol === 'admin'){
             header('Location: /admin');
-        }
-        
-        
+            // Y si tiene el rol de usuario le redirigiremos al panel de citas
+        } elseif ($this->rol === 'usuario') {
+            header('Location: /citas/misCitas');
+        } 
     }
 }

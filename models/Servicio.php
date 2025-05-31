@@ -8,8 +8,7 @@ class Servicio extends ActiveRecord {
     protected static $tabla = 'servicios';
     // Reescribimos las columnas de la tabla
     protected static $columnasBaseDatos = ['id', 'nombre', 'descripcion', 'precio', 'duracion_min', 'especialidad_id','creado_en','actualizado_en', 'imagen'];
-
-    
+ 
     public $id;
     public $nombre;
     public $descripcion;
@@ -57,6 +56,4 @@ class Servicio extends ActiveRecord {
         }
         return self::$errores;
     }
-
-
 }

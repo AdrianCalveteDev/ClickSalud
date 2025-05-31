@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../includes/app.php';
 
 use MVC\Router;
@@ -8,6 +7,7 @@ use Controllers\EspecialidadController;
 use Controllers\LoginController;
 use Controllers\PaginasPublicasController;
 use Controllers\UsuarioController;
+use Controllers\CitaController;
 
 $router = new Router();
 
@@ -46,6 +46,15 @@ $router->get('/logout', [LoginController::class, 'logout']);
 $router->get('/crearUsuario', [UsuarioController::class, 'crearUsuario']);
 $router->post('/crearUsuario', [UsuarioController::class, 'crearUsuario']);
 
+// Citas
+$router->get('/citas/misCitas', [CitaController::class, 'misCitas']);
+$router->get('/citas/crear', [CitaController::class, 'crear']);
+$router->post('/citas/crear', [CitaController::class, 'crear']);
+$router->post('/citas/eliminar', [CitaController::class, 'eliminar']);
+
+// APIS
+$router->post('/api/servicios', [CitaController::class, 'obtenerServiciosPorEspecialidad']); // Endpoint
+$router->post('/api/especialistas', [CitaController::class, 'obtenerEspecialistas']); // Endpoint
 
 
 $router->comprobarRutas();

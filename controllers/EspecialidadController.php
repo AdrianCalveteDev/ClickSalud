@@ -2,7 +2,6 @@
 
 namespace Controllers;
 use MVC\Router;
-use Model\Servicio;
 use Model\Especialidad;
 use Intervention\Image\Drivers\Gd\Driver;
 // Libreria de intervetion/image cargada desde composer para la subida de archivos.
@@ -52,7 +51,6 @@ class EspecialidadController {
 
             // Asignamos a una variable errores nuestro metodo getter estatico para recoger los errores de validación
             $errores = $especialidad->validar();
-
 
             // Miramos que el arreglo de los errores esté vacío con el método empty de PHP y si está vacío ejecutamos la query contra la BBDD
             if(empty($errores)){
@@ -156,5 +154,4 @@ class EspecialidadController {
             }   
         }
     }
-
 }

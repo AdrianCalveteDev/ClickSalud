@@ -161,7 +161,7 @@ class ActiveRecord{
     }
 
     // READ
-    // Listar todos los servicios
+    // Listar todos los resultados
     public static function all($limite = null){
 
         if ($limite === null) {
@@ -182,6 +182,23 @@ class ActiveRecord{
             // Devolvemos el primer elemento del array
             return array_shift($resultado); // array_shift, devuelve el primer elemento de un array
     }
+
+    // Buscar por multiples condiciones en el WHERE
+    public static function whereMultiple(array $condiciones) {
+        $tabla = static::$tabla;
+        $condicionesSQL = [];
+
+        foreach ($condiciones as $columna => $valor) {
+            $columnaEscapada = self::$baseDatos->escape_string($columna);
+            $valorEscapado = self::$baseDatos->escape_string($valor);
+            $condicionesSQL[] = "{$columnaEscapada} = '{$valorEscapado}'";
+        }
+
+        $query = "SELECT * FROM {$tabla} WHERE " . implode(' AND ', $condicionesSQL);
+
+        return self::consultaSQL($query);
+    }
+
     public static function consultaSQL($query){
         // Consultar la base de datos
         $resultado = self::$baseDatos->query($query);
@@ -198,6 +215,13 @@ class ActiveRecord{
         // Recuperar los resultados
         return $array;
     }
+
+    public static function whereAll($columna, $valor) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE $columna = '" . self::$baseDatos->escape_string($valor) . "'";
+        $resultado = self::consultaSQL($query);
+        return $resultado;
+    }
+
     protected static function crearObjeto($registro){
         $objeto = new static;
 

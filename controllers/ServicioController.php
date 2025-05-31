@@ -36,43 +36,41 @@ class ServicioController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        // Creamos una instancia de nuestra clase Servicio
-        $servicio = new Servicio($_POST['servicio']);
+            // Creamos una instancia de nuestra clase Servicio
+            $servicio = new Servicio($_POST['servicio']);
 
-        // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
-        // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
-        $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
-        if($_FILES['servicio']['tmp_name']['imagen']){
-            $manager = new Image(Driver::class);
-            $imagen = $manager->read($_FILES['servicio']['tmp_name']['imagen'])->cover(800, 600);
-            $servicio->setImagen($nombreImagenServicio);
-        }
-
-        // Asignamos a una variable errores nuestro metodo getter estatico para recoger los errores de validación
-        $errores = $servicio->validar();
-
-
-        // Miramos que el arreglo de los errores esté vacío con el método empty de PHP y si está vacío ejecutamos la query contra la BBDD
-        if(empty($errores)){
-
-            /* Para la subida de imágenes */
-
-            // Si la carpeta principal no existe, la creamos
-            if(!is_dir(CARPETA_IMAGENES)){
-                mkdir(CARPETA_IMAGENES);
-            }
-            // Si la carpeta para almacenar las imagenes de servicios no existe, la creamos
-            if(!is_dir(CARPETA_IMAGENES_SERVICIOS)){
-                mkdir(CARPETA_IMAGENES_SERVICIOS);
+            // A la imágen que va a subir nuestro usuario le debemos asignar un nombre único para que no coincida nunca con otras
+            // imágenes que pueden subir otros usuarios. Lo hacemos generando un número unico, randomizado y hasheado (md5)
+            $nombreImagenServicio = md5(uniqid(rand(), true)) . ".jpg";
+            if($_FILES['servicio']['tmp_name']['imagen']){
+                $manager = new Image(Driver::class);
+                $imagen = $manager->read($_FILES['servicio']['tmp_name']['imagen'])->cover(800, 600);
+                $servicio->setImagen($nombreImagenServicio);
             }
 
-            // Guardar la imagen en el servidor
-            $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
+            // Asignamos a una variable errores nuestro metodo getter estatico para recoger los errores de validación
+            $errores = $servicio->validar();
 
-            $servicio->guardar(MENSAJES_SERVICIOS);
+            // Miramos que el arreglo de los errores esté vacío con el método empty de PHP y si está vacío ejecutamos la query contra la BBDD
+            if(empty($errores)){
+
+                /* Para la subida de imágenes */
+
+                // Si la carpeta principal no existe, la creamos
+                if(!is_dir(CARPETA_IMAGENES)){
+                    mkdir(CARPETA_IMAGENES);
+                }
+                // Si la carpeta para almacenar las imagenes de servicios no existe, la creamos
+                if(!is_dir(CARPETA_IMAGENES_SERVICIOS)){
+                    mkdir(CARPETA_IMAGENES_SERVICIOS);
+                }
+
+                // Guardar la imagen en el servidor
+                $imagen->save(CARPETA_IMAGENES_SERVICIOS . $nombreImagenServicio);
+
+                $servicio->guardar(MENSAJES_SERVICIOS);
+            }
         }
-        
-    }
 
         $router->render('servicios/crear', [
             'servicio' => $servicio,

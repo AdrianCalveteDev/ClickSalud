@@ -5,6 +5,7 @@
     }
     
     $autenticado = $_SESSION['login'] ?? false;
+    $rol = $_SESSION['rol'] ?? null; 
     
 ?>
 
@@ -35,9 +36,12 @@
                     <a href="/contacto">Contacto</a>
                     <a href="/faq">FAQ</a>
                     <!-- Mostramos opciones por rol-->
-                    <?php //if($rol === 'admin'): ?>
-                        <!-- <a href="../../admin/">Administrador</a> -->
-                    <?php //endif; ?>
+                    <?php if($rol === 'admin'): ?>
+                        <a href="/admin">Administrador</a>
+                    <?php elseif ($rol === 'usuario'): ?>
+                        <a href="/citas/misCitas">Mis citas</a>
+                    <?php endif; ?>
+
                     <!-- Según esté autenticado o no, mostramos una opción u otra-->
                     <?php if(!$autenticado): ?>
                         <a class="header-nav_enlaces-enlace" href="/login">Iniciar sesión</a>

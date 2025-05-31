@@ -8,6 +8,7 @@ define('CARPETA_IMAGENES_ESPECIALIDADES', $_SERVER['DOCUMENT_ROOT'] . '/imagenes
 define('MENSAJES_SERVICIOS', '/servicios/admin');
 define('MENSAJES_ESPECIALIDADES', '/especialidades/admin');
 define('MENSAJES_NUEVO_USUARIO', '/crearUsuario');
+define('MENSAJE_CITAS','/citas/misCitas');
 
 
 function autenticar(): bool {

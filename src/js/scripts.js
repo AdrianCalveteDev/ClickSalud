@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
 /* Desplegar preguntas en FAQ */
 document.addEventListener("DOMContentLoaded", function () {
     const faqPreguntas = document.querySelectorAll(".faq-pregunta h3");
@@ -36,9 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-
-
 
 /* Muestra telefono o mail en función a lo que seleccione el usuario */
 const metodoContacto = document.querySelectorAll('input[name="contacto[contacto]"]');
@@ -66,3 +62,91 @@ function mostrarMetodosContacto(evento){
         `;
     }
 }
+
+/* Llamada Ajax al Endpoint de servicios, utilizado en el formulario para crear citas, donde al usuario le mostraremos los servicios en función de la especialidad seleccionada */
+document.addEventListener('DOMContentLoaded', function() {
+    const especialidadSelect = document.querySelector('#especialidad');
+    const servicioSelect = document.querySelector('#servicio');
+
+    especialidadSelect.addEventListener('change', function() {
+        const especialidadId = this.value;
+
+        if (!especialidadId) {
+            servicioSelect.innerHTML = '<option value="">-- Seleccione una especialidad primero --</option>';
+            servicioSelect.disabled = true;
+            return;
+        }
+
+        fetch('/api/servicios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `especialidad_id=${especialidadId}`
+        })
+        .then(response => response.json())
+        .then(servicios => {
+            servicioSelect.innerHTML = '<option value="">-- Seleccione --</option>';
+            servicios.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.id;
+                option.textContent = servicio.nombre;
+                servicioSelect.appendChild(option);
+            });
+            servicioSelect.disabled = false;
+        });
+    });
+});
+
+/* Llamada Ajax al endpoint de especialistas para solamente mostrar los especialistas según el centro y la especialidad seleccionadas */
+document.addEventListener('DOMContentLoaded', function() {
+    const especialidadSelect = document.querySelector('#especialidad');
+    const centroSelect = document.querySelector('#centro');
+    const especialistaSelect = document.querySelector('#especialista');
+
+    function cargarEspecialistas() {
+        const especialidadId = especialidadSelect.value;
+        const centroId = centroSelect.value;
+        const mensaje = document.querySelector('#mensaje-especialistas');
+
+        if (!especialidadId || !centroId) {
+            especialistaSelect.innerHTML = '<option value="">-- Seleccione especialidad y centro primero --</option>';
+            especialistaSelect.disabled = true;
+            mensaje.style.display = 'none';
+            return;
+        }
+
+        fetch('/api/especialistas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `especialidad_id=${especialidadId}&centro_id=${centroId}`
+        })
+        .then(response => response.json())
+        .then(especialistas => {
+            especialistaSelect.innerHTML = '';
+            if (especialistas.length === 0) {
+                especialistaSelect.disabled = true;
+                especialistaSelect.innerHTML = '<option value="">-- No hay especialistas disponibles, seleccione otro centro--</option>';
+                mensaje.style.display = 'block';
+            } else {
+                especialistaSelect.innerHTML = '<option value="">-- Seleccione --</option>';
+                especialistas.forEach(especialista => {
+                    const option = document.createElement('option');
+                    option.value = especialista.id;
+                    option.textContent = `${especialista.nombre} ${especialista.apellido}`;
+                    especialistaSelect.appendChild(option);
+                });
+                especialistaSelect.disabled = false;
+                mensaje.style.display = 'none';
+            }
+        });
+    }
+
+    especialidadSelect.addEventListener('change', cargarEspecialistas);
+    centroSelect.addEventListener('change', cargarEspecialistas);
+});
+
+
+

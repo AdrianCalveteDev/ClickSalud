@@ -13,6 +13,8 @@ class UsuarioController{
 
         $errores = Usuario::getErrores();
 
+        $mensaje = null;
+
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             // Creamos una instancia de nuestra clase Servicio
@@ -21,13 +23,23 @@ class UsuarioController{
             // Asignamos a una variable errores nuestro metodo getter estatico para recoger los errores de validación
             $errores = $usuario->validar();
 
-            $usuario->guardar(MENSAJES_NUEVO_USUARIO);
+            // Revisamos si el usuario no existe previamente en la base de datos (su email)
+            $usuario->usuarioExiste();
+
+            $errores = Usuario::getErrores();
+
+            if(empty($errores)){
+                // Encriptamos la contraseña antes de guardarla
+                $usuario->contrasena_hash = password_hash($usuario->contrasena_hash, PASSWORD_DEFAULT);
+                $usuario->guardar(MENSAJES_NUEVO_USUARIO);
+                header('Location: /crearUsuario?exito=1');
+                exit;
+            }
         }
 
-        
-
         $router->render('auth/crearUsuario', [
-            'errores' => $errores
+            'errores' => $errores,
+            'mensaje' => $mensaje
         ]);
     }
 }

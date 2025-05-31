@@ -25,7 +25,7 @@ class Usuario extends ActiveRecord {
         $this->email = $args['email'] ?? '';
         $this->contrasena_hash = $args['contrasena_hash'] ?? '';
         $this->repetirContrasena = $args['repetirContrasena'] ?? '';
-        // Si un usuario crea una cuenta por defecto se le asigna el rol usuario
+        // Si un usuario crea una cuenta, por defecto se le asigna el rol usuario
         $this->rol = 'usuario';
         $this->creado_en = date('Y-m-d H:i:s') ?? '';
         $this->actualizado_en = date('Y-m-d H:i:s') ?? '';

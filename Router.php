@@ -23,7 +23,22 @@ class Router {
         $auth = $_SESSION['login'] ?? null;
 
         // Array para rutas protegidas
-        $rutasProtegidas = ['/admin', '/servicios/admin', '/servicios/crear', '/servicios/actualizar', '/servicios/eliminar', '/especialidades/admin', '/especialidades/crear', '/especialidades/actualizar', '/especialidades/eliminar'];
+        $rutasProtegidas = [
+            // Panel administración
+            '/admin', 
+            '/servicios/admin', 
+            '/servicios/crear', 
+            '/servicios/actualizar', 
+            '/servicios/eliminar', 
+            '/especialidades/admin', 
+            '/especialidades/crear', 
+            '/especialidades/actualizar', 
+            '/especialidades/eliminar',
+            // Panel de usuario
+            '/citas/misCitas',
+            '/citas/crear',
+            '/citas/eliminar'
+        ];
 
 
         $urlActual = $_SERVER['PATH_INFO'] ?? '/';
