@@ -2,6 +2,12 @@
     <h1>Mis Citas</h1>
 
     <p>Hola <?php echo $usuario->nombre . " " . $usuario->apellido?></p>
+
+    <?php if(intval($resultado) === 1): ?>
+        <p class="creado">Cita creada correctamente</p>
+    <?php elseif(intval($resultado) ===3): ?>
+        <p class="creado">Cita eliminada correctamente</p>        
+    <?php endif ?>  
     
     <a href="/citas/crear" class="boton-verde">+ Nueva Cita</a>
 

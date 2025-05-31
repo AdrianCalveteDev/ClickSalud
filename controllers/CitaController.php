@@ -16,6 +16,7 @@ class CitaController {
 
         $usuario_id = $_SESSION['usuario_id'];
         $usuario = Admin::buscar($usuario_id);
+        $resultado = 0;
         
         // Creamos un mapa array con las especialidades para pasarselas a la vista
         $especialidades = Especialidad::all();
@@ -55,7 +56,8 @@ class CitaController {
             'usuario' => $usuario,
             'especialidades' => $mapaEspecialidades,
             'servicios' => $mapaServicios,
-            'especialistas' => $mapaEspecialistas
+            'especialistas' => $mapaEspecialistas,
+            'resultado' => $resultado
         ]);
     }
 
@@ -77,7 +79,7 @@ class CitaController {
 
             if (empty($errores)) {
                 $cita->guardar(MENSAJE_CITAS);
-                header('Location: /cita/reservada?exito=1');
+                header('Location: /citas/misCitas?resultado=1');
                 exit;
             }
         }
@@ -132,7 +134,8 @@ class CitaController {
             if($idCita){
                 // Obtenemos los datos del servicio
                 $cita = Cita::buscar($idCita);
-                $cita->eliminar(MENSAJES_SERVICIOS);        
+                $cita->eliminar(MENSAJES_SERVICIOS);
+                header('Location: /citas/misCitas?resultado=3');       
             }   
         }
     }
